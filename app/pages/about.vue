@@ -478,7 +478,7 @@ const updateHonorPosition = (isInit = false) => {
         y: -100,
         opacity: 0,
         scale: 0.5,
-        color: pos.color,
+        color: pos?.color || '#00000066',
         duration: 0.4,
         ease: 'power2.in',
         onComplete: () => {
@@ -502,7 +502,7 @@ const updateHonorPosition = (isInit = false) => {
         y: 120,
         opacity: 0,
         scale: 0.5,
-        color: pos.color,
+        color: pos?.color || '#00000066',
         duration: 0.4,
         ease: 'power2.in',
         onComplete: () => {
@@ -772,10 +772,10 @@ onMounted(() => {
   // 背景初始缩放动画
   gsap.fromTo(section1.value,
     {
-      backgroundSize: '120%'
+      backgroundSize: '120% 120%'
     },
     {
-      backgroundSize: '100%',
+      backgroundSize: '100% 100%',
       duration: 1.5,
       ease: 'power2.out'
     }
@@ -1179,7 +1179,7 @@ onBeforeUnmount(() => {
 
   .cert-img {
     will-change: transform, opacity;
-    filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.2));
+    /* filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.2)); */
     pointer-events: none;
   }
 }

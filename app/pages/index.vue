@@ -14,7 +14,44 @@ const carouselItems = [
 
 const main = ref()
 const section7Content = ref()
+const productListRef = ref<HTMLElement>()
 let ctx: gsap.Context
+
+// 产品列表拖动滚动
+const isDragging = ref(false)
+const startX = ref(0)
+const scrollLeft = ref(0)
+
+const handleMouseDown = (e: MouseEvent) => {
+  if (!productListRef.value) return
+  isDragging.value = true
+  startX.value = e.pageX - productListRef.value.offsetLeft
+  scrollLeft.value = productListRef.value.scrollLeft
+  productListRef.value.style.cursor = 'grabbing'
+  productListRef.value.style.userSelect = 'none'
+}
+
+const handleMouseMove = (e: MouseEvent) => {
+  if (!isDragging.value || !productListRef.value) return
+  e.preventDefault()
+  const x = e.pageX - productListRef.value.offsetLeft
+  const walk = (x - startX.value) * 2 // 滚动速度倍数
+  productListRef.value.scrollLeft = scrollLeft.value - walk
+}
+
+const handleMouseUp = () => {
+  if (!productListRef.value) return
+  isDragging.value = false
+  productListRef.value.style.cursor = 'grab'
+  productListRef.value.style.userSelect = ''
+}
+
+const handleMouseLeave = () => {
+  if (!isDragging.value || !productListRef.value) return
+  isDragging.value = false
+  productListRef.value.style.cursor = 'grab'
+  productListRef.value.style.userSelect = ''
+}
 
 // section7 文字内容 - 分成四段
 const section7Lines = [
@@ -453,7 +490,14 @@ onUnmounted(() => {
         </div>
       </div>
 
-      <div class="flex gap-[clamp(12px,2.222vw,24px)] overflow-x-auto scrollbar-hide">
+      <div
+        ref="productListRef"
+        class="flex gap-[clamp(12px,2.222vw,24px)] overflow-x-auto scrollbar-hide cursor-grab active:cursor-grabbing"
+        @mousedown="handleMouseDown"
+        @mousemove="handleMouseMove"
+        @mouseup="handleMouseUp"
+        @mouseleave="handleMouseLeave"
+      >
         <ProductCard
           v-for="item in 5"
           :key="item"

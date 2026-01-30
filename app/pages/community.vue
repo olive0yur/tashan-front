@@ -255,10 +255,10 @@ onMounted(() => {
   // 背景初始缩放动画
   gsap.fromTo(section1.value,
     {
-      backgroundSize: '120%'
+      backgroundSize: '120% 120%'
     },
     {
-      backgroundSize: '100%',
+      backgroundSize: '100% 100%',
       duration: 1.5,
       ease: 'power2.out'
     }
