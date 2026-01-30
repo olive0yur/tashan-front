@@ -1,36 +1,36 @@
 // plugins/axios.ts
-import axios, { type AxiosRequestConfig } from "axios";
+import axios, { type AxiosRequestConfig } from 'axios'
 
 // 创建 axios 实例
 const service = axios.create({
-  baseURL: "http://127.0.0.1:9100/api/",
-    // baseURL: "/api/",
+  baseURL: 'http://127.0.0.1:9100/api/',
+  // baseURL: "/api/",
   timeout: 25000,
   headers: {
-    "Content-Type": "application/json",
-  },
-});
+    'Content-Type': 'application/json'
+  }
+})
 
 // 请求拦截器
 service.interceptors.request.use(
   async (config) => {
-    return config;
+    return config
   },
   (error) => {
-    return Promise.reject(error);
+    return Promise.reject(error)
   }
-);
+)
 
 // 响应拦截器
 service.interceptors.response.use(
   (response) => {
-    const res = response.data;
-    return res;
+    const res = response.data
+    return res
   },
   (error) => {
-    return Promise.reject(error.response);
+    return Promise.reject(error.response)
   }
-);
+)
 
 // 封装请求方法
 export const http = {
@@ -39,7 +39,7 @@ export const http = {
     params?: object,
     config?: AxiosRequestConfig
   ): Promise<T> {
-    return service.get(url, { params, ...config });
+    return service.get(url, { params, ...config })
   },
 
   post<T = any>(
@@ -47,7 +47,7 @@ export const http = {
     data?: object | string,
     config?: AxiosRequestConfig
   ): Promise<T> {
-    return service.post(url, data, { ...config });
+    return service.post(url, data, { ...config })
   },
 
   put<T = any>(
@@ -55,7 +55,7 @@ export const http = {
     data?: object,
     config?: AxiosRequestConfig
   ): Promise<T> {
-    return service.put(url, data, { ...config });
+    return service.put(url, data, { ...config })
   },
 
   delete<T = any>(
@@ -63,8 +63,8 @@ export const http = {
     params?: object,
     config?: AxiosRequestConfig
   ): Promise<T> {
-    return service.delete(url, { params, ...config });
-  },
-};
+    return service.delete(url, { params, ...config })
+  }
+}
 
-export default http;
+export default http

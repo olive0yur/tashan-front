@@ -4,6 +4,8 @@
     class="bg-[#EEF0F4]"
   >
     <div
+
+      ref="section1"
       class="section1 h-screen w-full header-container"
       :style="{
         backgroundImage: `url(${bgImage})`,
@@ -109,13 +111,15 @@
 import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { imgBaseURL } from '~/utils'
 
 gsap.registerPlugin(ScrollTrigger)
 
 const main = ref()
+const section1 = ref()
 let ctx: gsap.Context
 
-const bgImage = ref('/img/new-bg.png')
+const bgImage = ref(imgBaseURL('ts-new-bg.png'))
 
 const currentNewsIndex = ref(0)
 
@@ -131,25 +135,25 @@ const newsItems = ref<NewsItem[]>([
     id: 1,
     date: '2024.12.24',
     title: '他山科技发布"灵巧手"H3系列，搭载自研 R-SpiNNaker 触觉芯片',
-    image: '/news/product.png'
+    image: imgBaseURL('ts-news-cover.png')
   },
   {
     id: 2,
     date: '2024.12.20',
     title: '他山科技完成新一轮融资，加速触觉技术研发',
-    image: '/news/product.png'
+    image: imgBaseURL('ts-news-cover.png')
   },
   {
     id: 3,
     date: '2024.12.15',
     title: '他山科技参展2024世界机器人大会，展示最新触觉技术',
-    image: '/news/product.png'
+    image: imgBaseURL('ts-news-cover.png')
   },
   {
     id: 4,
     date: '2024.12.10',
     title: '他山科技与多家企业达成战略合作，共建触觉生态',
-    image: '/news/product.png'
+    image: imgBaseURL('ts-news-cover.png')
   }
 ])
 
@@ -166,73 +170,73 @@ const allNewsCardList = ref([
     id: 1,
     date: '2024.12.24',
     title: '赋能具身智能,他山科技与头部人形机器人厂商达成深度战略合作',
-    image: '/news/product.png'
+    image: imgBaseURL('ts-news-cover.png')
   },
   {
     id: 2,
     date: '2024.12.20',
     title: '他山科技发布"灵巧手"H3系列，搭载自研 R-SpiNNaker 触觉芯片',
-    image: '/news/product.png'
+    image: imgBaseURL('ts-news-cover.png')
   },
   {
     id: 3,
     date: '2024.12.15',
     title: '他山科技完成新一轮融资，加速触觉技术研发与产品创新',
-    image: '/news/product.png'
+    image: imgBaseURL('ts-news-cover.png')
   },
   {
     id: 4,
     date: '2024.12.10',
     title: '他山科技参展2024世界机器人大会，展示最新触觉技术成果',
-    image: '/news/product.png'
+    image: imgBaseURL('ts-news-cover.png')
   },
   {
     id: 5,
     date: '2024.12.05',
     title: '他山科技与多家企业达成战略合作，共建触觉生态圈',
-    image: '/news/product.png'
+    image: imgBaseURL('ts-news-cover.png')
   },
   {
     id: 6,
     date: '2024.12.01',
     title: '他山科技触觉芯片技术突破，为机器人行业带来新机遇',
-    image: '/news/product.png'
+    image: imgBaseURL('ts-news-cover.png')
   },
   {
     id: 7,
     date: '2024.11.28',
     title: '赋能具身智能,他山科技与头部人形机器人厂商达成深度战略合作',
-    image: '/news/product.png'
+    image: imgBaseURL('ts-news-cover.png')
   },
   {
     id: 8,
     date: '2024.11.25',
     title: '他山科技发布"灵巧手"H3系列，搭载自研 R-SpiNNaker 触觉芯片',
-    image: '/news/product.png'
+    image: imgBaseURL('ts-news-cover.png')
   },
   {
     id: 9,
     date: '2024.11.20',
     title: '他山科技完成新一轮融资，加速触觉技术研发与产品创新',
-    image: '/news/product.png'
+    image: imgBaseURL('ts-news-cover.png')
   },
   {
     id: 10,
     date: '2024.11.15',
     title: '他山科技参展2024世界机器人大会，展示最新触觉技术成果',
-    image: '/news/product.png'
+    image: imgBaseURL('ts-news-cover.png')
   },
   {
     id: 11,
     date: '2024.11.10',
     title: '他山科技与多家企业达成战略合作，共建触觉生态圈',
-    image: '/news/product.png'
+    image: imgBaseURL('ts-news-cover.png')
   },
   {
     id: 12,
     date: '2024.11.05',
     title: '他山科技触觉芯片技术突破，为机器人行业带来新机遇',
-    image: '/news/product.png'
+    image: imgBaseURL('ts-news-cover.png')
   }
 ])
 
@@ -248,6 +252,18 @@ const newsCardList = computed(() => {
 })
 
 onMounted(() => {
+  // 背景初始缩放动画
+  gsap.fromTo(section1.value,
+    {
+      backgroundSize: '120%'
+    },
+    {
+      backgroundSize: '100%',
+      duration: 1.5,
+      ease: 'power2.out'
+    }
+  )
+
   ctx = gsap.context(() => {
     // Pin section1
     ScrollTrigger.create({

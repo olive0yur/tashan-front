@@ -173,6 +173,24 @@ onMounted(() => {
     // section2 盖 section1
     pinCover('.section1')
 
+    // section2 文字入场动画
+    const section2Texts = document.querySelectorAll('.section2ContentItem1ImageText, .section2ContentItem2TopText, .section2ContentItem2BottomLeftText, .section2ContentItem2BottomRightTopText, .section2ContentItem3TopText, .section2ContentItem3BottomText')
+    gsap.set(section2Texts, { opacity: 0, y: 30 })
+
+    ScrollTrigger.create({
+      trigger: '.section2',
+      start: 'top 60%',
+      onEnter: () => {
+        gsap.to(section2Texts, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          stagger: 0.1,
+          ease: 'power2.out'
+        })
+      }
+    })
+
     // 1. 获取 DOM 元素
     const s3 = document.querySelector('.section3') as HTMLElement
     const title = document.querySelector('.section3-title') as HTMLElement
@@ -291,8 +309,106 @@ onUnmounted(() => {
       <MediaCarousel :items="carouselItems" />
     </div>
 
-    <div class="h-screen w-full section2 relative z-10 flex items-center justify-center text-9xl font-bold text-black">
-      222
+    <div class="h-screen w-full section2 relative z-10">
+      <div>
+        <SplitText
+          text="触觉技术规格"
+          tag="span"
+          class-name="section2Title"
+          split-type="chars"
+          :delay="10"
+          :duration="1"
+          ease="power3.out"
+          :from="{ opacity: 0, y: 40 }"
+          :to="{ opacity: 1, y: 0 }"
+          text-align="center"
+        />
+      </div>
+
+      <div class="section2Content">
+        <div class="section2ContentItem1">
+          <div class="section2ContentItem1Image">
+            <img
+              :src="imgBaseURL('ts-home-finger.png')"
+              alt=""
+            >
+          </div>
+          <div class="section2ContentItem1ImageText">
+            <span class="section2ContentItem1ImageTextValue">0.01<span class="section2ContentItem1ImageTextValueUnit">N</span></span>
+            <span class="section2ContentItem1ImageTextDescription">高精度测量</span>
+          </div>
+        </div>
+        <div class="section2ContentItem2">
+          <div class="section2ContentItem2Top">
+            <div class="section2ContentItem2TopImage">
+              <img
+                :src="imgBaseURL('ts-home-mr.png')"
+                alt=""
+              >
+            </div>
+            <div class="section2ContentItem2TopText">
+              <span class="section2ContentItem2TopTextValue">30<span class="section2ContentItem2TopTextValueUnit">+</span></span>
+              <span class="section2ContentItem2TopTextDescription">材质识别</span>
+            </div>
+          </div>
+          <div class="section2ContentItem2Bottom">
+            <div class="section2ContentItem2BottomLeft">
+              <div class="section2ContentItem2BottomLeftImage">
+                <img
+                  :src="imgBaseURL('ts-home-yl.png')"
+                  alt=""
+                >
+              </div>
+              <div class="section2ContentItem2BottomLeftText">
+                <span class="section2ContentItem2BottomLeftTextValue">1000<span class="section2ContentItem2BottomLeftTextValueUnit">n</span></span>
+                <span class="section2ContentItem2BottomLeftTextDescription">安全过载</span>
+              </div>
+            </div>
+
+            <div class="section2ContentItem2BottomRight">
+              <div class="section2ContentItem2BottomRightTop">
+                <div class="section2ContentItem2BottomRightTopText">
+                  <span class="section2ContentItem2BottomRightTopTextValue">2-10<span class="section2ContentItem2BottomRightTopTextValueUnit">cm</span></span>
+                  <span class="section2ContentItem2BottomRightTopTextDescription">双距感知</span>
+                </div>
+              </div>
+              <div class="section2ContentItem2BottomRightBottom">
+                <div class="section2ContentItem2BottomRightBottomImage">
+                  <img
+                    :src="imgBaseURL('ts-home-touch1.png')"
+                    alt=""
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="section2ContentItem3">
+          <div class="section2ContentItem3Top">
+            <div class="section2ContentItem3TopImage">
+              <img
+                :src="imgBaseURL('ts-home-xp.png')"
+                alt=""
+              >
+            </div>
+            <div class="section2ContentItem3TopText">
+              <span class="section2ContentItem3TopTextValue">R-SpiNNaker</span>
+              <span class="section2ContentItem3TopTextDescription">类脑芯片架构</span>
+            </div>
+          </div>
+          <div class="section2ContentItem3Bottom">
+            <div class="section2ContentItem3BottomImage">
+              <img
+                :src="imgBaseURL('ts-home-cs300.png')"
+                alt=""
+              >
+            </div>
+            <div class="section2ContentItem3BottomText">
+              <span class="section2ContentItem3BottomTextDescription">寿命测试</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="h-screen w-full section3 flex flex-col items-center justify-center text-9xl font-bold text-black">
@@ -514,6 +630,440 @@ onUnmounted(() => {
   .section2 {
     border-radius: 54px 54px 0 0;
     background: #FFF;
+    padding: clamp(40px, 9.259vw, 100px);
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+
+    .section2Title {
+      color: #000;
+      font-size: clamp(24px, 4.444vw, 48px);
+      font-style: normal;
+      font-weight: 400;
+      line-height: 1.25;
+      letter-spacing: 0.02em;
+      margin-bottom: clamp(30px, 5.556vw, 60px);
+      flex-shrink: 0;
+    }
+
+    .section2Content {
+      display: flex;
+      gap: 16px;
+      flex: 1;
+      min-height: 0;
+
+      .section2ContentItem1 {
+        display: flex;
+        align-items: end;
+        justify-content: center;
+        border-radius: 16px;
+        background: linear-gradient(0deg, #F7F7F8 0%, #A4B6CE 100%);
+        flex: 5;
+        min-height: 0;
+        overflow: hidden;
+        position: relative;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+        &:hover {
+          transform: translateY(-8px);
+          box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .section2ContentItem1Image {
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+          }
+        }
+
+        .section2ContentItem1ImageText {
+          position: absolute;
+          top: 40px;
+          left: 40px;
+          text-align: center;
+          color: #FFF;
+          font-size: 24px;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+
+          .section2ContentItem1ImageTextValue {
+            color: #000;
+            font-size: 80px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 80px; /* 100% */
+            letter-spacing: 2px;
+          }
+          .section2ContentItem1ImageTextValueUnit {
+            color: #000;
+            font-size: 40px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 80px;
+            letter-spacing: 2px;
+          }
+          .section2ContentItem1ImageTextDescription {
+            color: rgba(0, 0, 0, 0.60);
+            font-size: 20px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 20px; /* 100% */
+            letter-spacing: 2px;
+          }
+        }
+      }
+
+      .section2ContentItem2 {
+        border-radius: 16px;
+        flex: 5;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        .section2ContentItem2Top {
+          border-radius: 16px;
+          background: linear-gradient(0deg, #F7F7F8 0%, #A4B6CE 213.75%);
+          flex: 1;
+          min-height: 0;
+          overflow: hidden;
+          position: relative;
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+          &:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+          }
+
+          .section2ContentItem2TopImage {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+
+            img {
+              max-width: 100%;
+              max-height: 100%;
+              object-fit: contain;
+            }
+          }
+
+          .section2ContentItem2TopText {
+            position: absolute;
+            top: 40px;
+            left: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+
+            .section2ContentItem2TopTextValue {
+              color: #000;
+              font-size: 80px;
+              font-style: normal;
+              font-weight: 400;
+              line-height: 80px;
+              letter-spacing: 2px;
+            }
+            .section2ContentItem2TopTextValueUnit {
+              color: #000;
+              font-size: 40px;
+              font-style: normal;
+              font-weight: 400;
+              line-height: 80px;
+              letter-spacing: 2px;
+            }
+            .section2ContentItem2TopTextDescription {
+              color: rgba(0, 0, 0, 0.60);
+              font-size: 20px;
+              font-style: normal;
+              font-weight: 400;
+              line-height: 20px;
+              letter-spacing: 2px;
+            }
+          }
+        }
+        .section2ContentItem2Bottom {
+          border-radius: 16px;
+          flex: 2;
+          min-height: 0;
+          display: flex;
+          gap: 16px;
+
+          .section2ContentItem2BottomLeft {
+            flex: 3;
+            border-radius: 16px;
+            background: linear-gradient(0deg, #F7F7F8 0%, #A4B6CE 100%);
+            position: relative;
+            overflow: hidden;
+            min-height: 0;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+            &:hover {
+              transform: translateY(-8px);
+              box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+            }
+
+            .section2ContentItem2BottomLeftImage {
+              position: absolute;
+              top: 0;
+              left: 0;
+              right: 0;
+              bottom: 0;
+
+              img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+              }
+            }
+
+            .section2ContentItem2BottomLeftText {
+              position: absolute;
+              top: 40px;
+              left: 40px;
+              display: flex;
+              flex-direction: column;
+              align-items: flex-start;
+
+              .section2ContentItem2BottomLeftTextValue {
+                color: #FFF;
+                font-size: 60px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: 64px;
+                letter-spacing: 2px;
+              }
+              .section2ContentItem2BottomLeftTextValueUnit {
+                color: #FFF;
+                font-size: 40px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: 80px;
+                letter-spacing: 2px;
+              }
+              .section2ContentItem2BottomLeftTextDescription {
+                color: rgba(255, 255, 255, 0.60);
+                font-size: 20px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: 20px;
+                letter-spacing: 2px;
+              }
+            }
+          }
+
+          .section2ContentItem2BottomRight {
+            flex: 2;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            min-height: 0;
+
+            .section2ContentItem2BottomRightTop {
+              flex: 2;
+              border-radius: 16px;
+              background: linear-gradient(180deg, #D1D9E5 -57.53%, #F5F6F7 195.69%);
+              min-height: 0;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+              &:hover {
+                transform: translateY(-8px);
+                box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+              }
+
+              .section2ContentItem2BottomRightTopText {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+
+                .section2ContentItem2BottomRightTopTextValue {
+                  color: #000;
+                  font-size: 48px;
+                  font-style: normal;
+                  font-weight: 400;
+                  line-height: 48px;
+                  letter-spacing: 2px;
+                }
+                .section2ContentItem2BottomRightTopTextValueUnit {
+                  color: #000;
+                  font-size: 24px;
+                  font-style: normal;
+                  font-weight: 400;
+                  line-height: 48px;
+                  letter-spacing: 2px;
+                }
+                .section2ContentItem2BottomRightTopTextDescription {
+                  color: rgba(0, 0, 0, 0.60);
+                  font-size: 16px;
+                  font-style: normal;
+                  font-weight: 400;
+                  line-height: 20px;
+                  letter-spacing: 2px;
+                }
+              }
+            }
+
+            .section2ContentItem2BottomRightBottom {
+              flex: 3;
+              border-radius: 16px;
+              background: linear-gradient(0deg, #F7F7F8 0%, #A4B6CE 100%);
+              position: relative;
+              overflow: hidden;
+              min-height: 0;
+              transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+              &:hover {
+                transform: translateY(-8px);
+                box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+              }
+
+              .section2ContentItem2BottomRightBottomImage {
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+
+                img {
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                }
+              }
+            }
+          }
+        }
+      }
+      .section2ContentItem3 {
+        border-radius: 16px;
+        flex: 4;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        min-height: 0;
+
+        .section2ContentItem3Top {
+          flex: 1;
+          border-radius: 16px;
+          background: linear-gradient(0deg, #F7F7F8 0%, #A4B6CE 100%);
+          position: relative;
+          overflow: hidden;
+          min-height: 0;
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+          &:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+          }
+
+          .section2ContentItem3TopImage {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+
+            img {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+            }
+          }
+
+          .section2ContentItem3TopText {
+            position: absolute;
+            top: 40px;
+            left: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+
+            .section2ContentItem3TopTextValue {
+              color: #000;
+              font-size: 48px;
+              font-style: normal;
+              font-weight: 400;
+              line-height: 48px;
+              letter-spacing: 2px;
+              margin-bottom: 10px;
+            }
+            .section2ContentItem3TopTextDescription {
+              color: rgba(0, 0, 0, 0.60);
+              font-size: 20px;
+              font-style: normal;
+              font-weight: 400;
+              line-height: 30px;
+              letter-spacing: 2px;
+            }
+          }
+        }
+
+        .section2ContentItem3Bottom {
+          flex: 2;
+          border-radius: 16px;
+          background: linear-gradient(0deg, #F7F7F8 0%, #A4B6CE 100%);
+          position: relative;
+          overflow: hidden;
+          min-height: 0;
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+          &:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+          }
+
+          .section2ContentItem3BottomImage {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+
+            img {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+            }
+          }
+
+          .section2ContentItem3BottomText {
+            position: absolute;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+
+            .section2ContentItem3BottomTextDescription {
+              color: #363636;
+              font-size: 20px;
+              font-style: normal;
+              font-weight: 400;
+              line-height: 20px;
+              letter-spacing: 2px;
+            }
+          }
+        }
+      }
+    }
   }
 
   .section3 {
@@ -738,6 +1288,7 @@ onUnmounted(() => {
       gap: clamp(12px, 2.222vw, 24px);
 
       .section8ContentLeft {
+        border-radius: 20px;
         background: #EEF0F4;
         flex: 3;
         padding-top: clamp(40px, 9.259vw, 100px);
@@ -793,6 +1344,7 @@ onUnmounted(() => {
       }
 
       .section8ContentRight {
+        border-radius: 20px;
         flex: 5;
         position: relative;
         overflow: hidden;

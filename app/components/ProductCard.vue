@@ -14,7 +14,7 @@ const props = withDefaults(defineProps<Props>(), {
   title: 'TS-F-C',
   badge: 'New',
   description: '指尖触觉传感器',
-  features: '优势: 高灵敏度/接近觉/三维力',
+  features: '高灵敏度/接近觉/三维力',
   modelPath: '/product-1.glb'
 })
 
@@ -195,7 +195,7 @@ onUnmounted(() => {
     <div class="h-px bg-[#00000029] mb-[16px]" />
     <div class="mb-[16px] flex justify-between items-center">
       <span class="text-[16px]">{{ description }}</span>
-      <span class="text-[14px] text-gray-600">{{ features }}</span>
+      <span class="text-[14px] text-black"><span class="text-[rgba(0,0,0,0.30)]">优势:</span> {{ features }}</span>
     </div>
   </div>
 </template>

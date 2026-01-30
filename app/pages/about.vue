@@ -4,9 +4,10 @@
     class="bg-[#F4F4F5]"
   >
     <div
+      ref="section1"
       class="section1 h-screen w-full header-container"
       :style="{
-        backgroundImage: 'url(/about/about.png)',
+        backgroundImage: `url(${imgBaseURL('ts-about.png')})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat'
@@ -42,7 +43,7 @@
         <div>
           <img
             class=""
-            src="/about/logo.png"
+            :src="imgBaseURL('ts-about-logo.png')"
             alt=""
           >
         </div>
@@ -90,7 +91,7 @@
 
           <div
             class="flex-1 flex flex-col pt-[60px] justify-between"
-            @mouseleave="currentImage = '/about/mini.png'"
+            @mouseleave="currentImage = imgBaseURL('ts-mini.png')"
           >
             <div
               class="culture-item"
@@ -106,7 +107,7 @@
               </div>
               <div class="culture-item-icon">
                 <img
-                  src="/about/mini.png"
+                  :src="imgBaseURL('ts-mini.png')"
                   alt=""
                 >
               </div>
@@ -131,7 +132,7 @@
               </div>
               <div class="culture-item-icon">
                 <img
-                  src="/about/mini2.png"
+                  :src="imgBaseURL('ts-mini2.png')"
                   alt=""
                 >
               </div>
@@ -156,7 +157,7 @@
               </div>
               <div class="culture-item-icon">
                 <img
-                  src="/about/mini3.png"
+                  :src="imgBaseURL('ts-mini3.png')"
                   alt=""
                 >
               </div>
@@ -184,7 +185,7 @@
               </div>
               <div class="culture-item-icon">
                 <img
-                  src="/about/mini4.png"
+                  :src="imgBaseURL('ts-mini4.png')"
                   alt=""
                 >
               </div>
@@ -205,7 +206,7 @@
       ref="section3"
       class="section3  w-full"
       :style="{
-        backgroundImage: 'url(/about/img-year.png)',
+        backgroundImage: `url(${imgBaseURL('ts-img-year.png')})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat'
@@ -262,13 +263,29 @@
       ref="section4"
       class="section4  w-full flex gap-[253px]"
     >
-      <div class="w-auto">
-        <img
-          src="/about/Subtract.svg"
-          class="h-full"
-          alt=""
-        >
+      <div class="w-auto relative min-h-0 flex flex-col">
+        <div class="relative min-h-0 flex-1">
+          <img
+            src="/about/Subtract.svg"
+            class="w-full h-full object-contain -translate-x-[80px]"
+            alt=""
+          >
+          <div
+            ref="certContainer"
+            class="absolute inset-0 pointer-events-none overflow-hidden"
+          >
+            <img
+              v-for="(item, index) in certList"
+              :key="item.id"
+              :ref="el => { if (el) certRefs[index] = el as HTMLElement }"
+              class="cert-img absolute h-[25%]"
+              :src="imgBaseURL(item.src)"
+              :alt="item.alt"
+            >
+          </div>
+        </div>
       </div>
+
       <div class="py-[100px]">
         <SplitText
           text="荣誉奖项"
@@ -284,6 +301,77 @@
         />
         <div class="honor-label">
           我们将产品提升到一个全新的水平。以下这些业界权威奖项就是最好的证明。
+        </div>
+
+        <div class="honor-list-container">
+          <div
+            v-for="(item, index) in honorList"
+            :key="item.id"
+            :ref="el => { if (el) honorRefs[index] = el as HTMLElement }"
+            class="honor-list-item"
+          >
+            {{ item.text }}
+          </div>
+        </div>
+        <div class="flex gap-4 mt-[100px]">
+          <div
+            class="w-[51px] h-[60px] rounded-tl-[4px] rounded-tr-[18px] rounded-bl-[15px] rounded-br-[4px] border border-[#0073FF] flex items-center justify-center cursor-pointer hover:bg-[#0073FF] transition-colors bg-white/50 backdrop-blur-sm group"
+            @click="handlePrevCert"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+            >
+              <path
+                d="M6 8L2 12L6 16"
+                stroke="#0073FF"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="group-hover:stroke-white transition-colors"
+              />
+              <path
+                d="M22 12H2"
+                stroke="#0073FF"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="group-hover:stroke-white transition-colors"
+              />
+            </svg>
+          </div>
+          <div
+            class="w-[51px] h-[60px] rounded-tl-[4px] rounded-tr-[18px] rounded-bl-[15px] rounded-br-[4px] border border-[#0073FF] flex items-center justify-center cursor-pointer hover:bg-[#0073FF] transition-colors bg-white/50 backdrop-blur-sm group"
+            @click="handleNextCert"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+            >
+              <path
+                d="M18 8L22 12L18 16"
+                stroke="#0073FF"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="group-hover:stroke-white transition-colors"
+              />
+              <path
+                d="M2 12H22"
+                stroke="#0073FF"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="group-hover:stroke-white transition-colors"
+              />
+            </svg>
+          </div>
         </div>
       </div>
     </div>
@@ -317,15 +405,263 @@
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { imgBaseURL } from '~/utils'
 
 gsap.registerPlugin(ScrollTrigger)
 
 const main = ref()
+const section1 = ref()
 const cultureSection = ref()
 const section3 = ref()
 const section4 = ref()
-const currentImage = ref('/about/mini.png')
+const currentImage = ref(imgBaseURL('ts-mini.png'))
 const currentYear = ref<number>(2017)
+const certContainer = ref()
+// const cert1 = ref<HTMLElement | null>(null)
+// const cert2 = ref<HTMLElement | null>(null)
+// const cert3 = ref<HTMLElement | null>(null)
+const certRefs = ref<HTMLElement[]>([])
+const prevSlotIndices = ref<Record<number, number>>({})
+const currentCertIndex = ref(0) // 0 means certList[0] is at Slot 0? No, let's say this is the rotation offset.
+
+const certList = [
+  { id: 1, src: 'ts-cert-1.png', alt: '证书1' },
+  { id: 2, src: 'ts-cert-1.png', alt: '证书2' },
+  { id: 3, src: 'ts-cert-1.png', alt: '证书3' }
+]
+
+const honorRefs = ref<HTMLElement[]>([])
+const prevHonorSlotIndices = ref<Record<number, number>>({})
+
+const honorList = [
+  { id: 1, text: '2024 年度 AI 硬件创新突破奖' },
+  { id: 2, text: '2025 全球未来设计大奖 · 金奖' },
+  { id: 3, text: 'CES 2025 机器人技术类 · 最佳创新奖' }
+]
+
+const honorPositions = [
+  { // Slot 0: Top (Small)
+    opacity: 0.6,
+    scale: 0.75, // 24px / 32px = 0.75
+    y: -110,
+    zIndex: 1,
+    color: '#00000066'
+  },
+  { // Slot 1: Center (Active/Large)
+    opacity: 1,
+    scale: 1, // 32px / 32px = 1
+    y: 0,
+    zIndex: 10,
+    color: '#0073FF'
+  },
+  { // Slot 2: Bottom (Small)
+    opacity: 0.6,
+    scale: 0.75, // 24px / 32px = 0.75
+    y: 110,
+    zIndex: 1,
+    color: '#00000066'
+  }
+]
+
+const updateHonorPosition = (isInit = false) => {
+  honorRefs.value.forEach((el, index) => {
+    if (!el) return
+
+    const slotIndex = (index + currentCertIndex.value) % 3
+    const pos = honorPositions[slotIndex]
+    const prevSlot = prevHonorSlotIndices.value[index]
+
+    // Detect Wrap Around Up (Top -> Bottom): Next Click
+    if (!isInit && prevSlot === 0 && slotIndex === 2) {
+      // 1. Move up and disappear
+      gsap.to(el, {
+        y: -100,
+        opacity: 0,
+        scale: 0.5,
+        color: pos.color,
+        duration: 0.4,
+        ease: 'power2.in',
+        onComplete: () => {
+          // 2. Reset to bottom
+          gsap.set(el, {
+            y: 120,
+            opacity: 0
+          })
+          // 3. Float up to bottom position
+          gsap.to(el, {
+            ...pos,
+            duration: 1.1,
+            ease: 'power3.out'
+          })
+        }
+      })
+    } else if (!isInit && prevSlot === 2 && slotIndex === 0) {
+      // Detect Wrap Around Down (Bottom -> Top): Prev Click
+      // 1. Move down and disappear
+      gsap.to(el, {
+        y: 120,
+        opacity: 0,
+        scale: 0.5,
+        color: pos.color,
+        duration: 0.4,
+        ease: 'power2.in',
+        onComplete: () => {
+          // 2. Reset to top
+          gsap.set(el, {
+            y: -100,
+            opacity: 0
+          })
+          // 3. Float down to top position
+          gsap.to(el, {
+            ...pos,
+            duration: 1.1,
+            ease: 'power3.out'
+          })
+        }
+      })
+    } else {
+      // Normal animation with smooth easing
+      gsap.to(el, {
+        ...pos,
+        duration: 1.5,
+        ease: 'power2.inOut',
+        overwrite: true
+      })
+    }
+
+    prevHonorSlotIndices.value[index] = slotIndex
+  })
+}
+
+const certPositions = [
+  { // Slot 0: Top Left
+    left: '0%',
+    top: '0%',
+    xPercent: 0,
+    yPercent: 0,
+    y: -120,
+    x: 120,
+    scale: 1,
+    zIndex: 1,
+    opacity: 1
+  },
+  { // Slot 1: Center Right (Main)
+    left: '85%',
+    top: '50%',
+    xPercent: -100,
+    yPercent: -50,
+    y: 0,
+    x: 0,
+    scale: 1.4,
+    zIndex: 10,
+    opacity: 1
+  },
+  { // Slot 2: Bottom Left
+    left: '0%',
+    top: '100%',
+    xPercent: 0,
+    yPercent: -100,
+    y: 120,
+    x: 120,
+    scale: 1,
+    zIndex: 1,
+    opacity: 1
+  }
+]
+
+const updateCertsPosition = (isInit = false) => {
+  certRefs.value.forEach((el, index) => {
+    if (!el) return
+
+    // Formula: slotIndex = (index + currentCertIndex.value) % 3
+    const slotIndex = (index + currentCertIndex.value) % 3
+    const pos = certPositions[slotIndex]
+    const prevSlot = prevSlotIndices.value[index]
+
+    // Detect Wrap Around Up (Top -> Bottom): Next Click
+    // Slot 0 -> Slot 2
+    if (!isInit && prevSlot === 0 && slotIndex === 2) {
+      // 1. First move up and disappear (faster) - Towards Top-Left
+      gsap.to(el, {
+        top: '-50%',
+        x: -300, // Move Left (Reversed)
+        opacity: 0,
+        scale: 0.5,
+        duration: 0.6,
+        ease: 'power2.in',
+        onComplete: () => {
+          // 2. Instantly move to deep bottom - Start from Bottom-Left
+          gsap.set(el, {
+            ...pos,
+            top: '150%', // Start from further down
+            y: 200,
+            x: -300, // Start from Left (Reversed)
+            opacity: 0
+          })
+          // 3. Float up to Bottom position (slower entrance)
+          gsap.to(el, {
+            ...pos,
+            duration: 0.9,
+            ease: 'power2.out'
+          })
+        }
+      })
+    } else if (!isInit && prevSlot === 2 && slotIndex === 0) {
+      // Detect Wrap Around Down (Bottom -> Top): Prev Click
+      // Slot 2 -> Slot 0
+      // 1. First move down and disappear (faster) - Towards Bottom-Left
+      gsap.to(el, {
+        top: '150%', // Move down and out
+        x: -300, // Move Left (Reversed)
+        opacity: 0,
+        scale: 0.5,
+        duration: 0.6,
+        ease: 'power2.in',
+        onComplete: () => {
+          // 2. Instantly move to high top - Start from Top-Left
+          gsap.set(el, {
+            ...pos,
+            top: '-50%', // Start from further up
+            y: -200,
+            x: -300, // Start from Left (Reversed)
+            opacity: 0
+          })
+          // 3. Float down to Top position (slower entrance)
+          gsap.to(el, {
+            ...pos,
+            duration: 0.9,
+            ease: 'power2.out'
+          })
+        }
+      })
+    } else {
+      // Normal animation
+      gsap.to(el, {
+        ...pos,
+        duration: 1.5,
+        ease: 'power2.inOut',
+        overwrite: true
+      })
+    }
+
+    prevSlotIndices.value[index] = slotIndex
+  })
+}
+
+const handlePrevCert = () => {
+  currentCertIndex.value = (currentCertIndex.value + 1) % certList.length
+  updateCertsPosition()
+  updateHonorPosition()
+}
+
+const handleNextCert = () => {
+  currentCertIndex.value = (currentCertIndex.value - 1 + certList.length) % certList.length
+  updateCertsPosition()
+  updateHonorPosition()
+}
+
+// Set initial refs logic in onMounted
+
 let ctx: gsap.Context
 let autoPlayTimer: ReturnType<typeof setInterval> | null = null
 
@@ -415,7 +751,7 @@ const stopAutoPlay = () => {
 }
 
 const handleCultureItemHover = (index: number) => {
-  currentImage.value = `/about/mini${index === 0 ? '' : index + 1}.png`
+  currentImage.value = imgBaseURL(`ts-mini${index === 0 ? '' : index + 1}.png`)
 }
 
 const handleYearClick = (year: number) => {
@@ -427,6 +763,23 @@ const handleYearClick = (year: number) => {
 onMounted(() => {
   // 启动自动轮播
   startAutoPlay()
+
+  // 初始化证书位置
+  updateCertsPosition(true)
+  // 初始化荣誉文字位置
+  updateHonorPosition(true)
+
+  // 背景初始缩放动画
+  gsap.fromTo(section1.value,
+    {
+      backgroundSize: '120%'
+    },
+    {
+      backgroundSize: '100%',
+      duration: 1.5,
+      ease: 'power2.out'
+    }
+  )
 
   ctx = gsap.context(() => {
     // Pin section1
@@ -666,6 +1019,22 @@ onBeforeUnmount(() => {
 
   .culture-image {
     transition: opacity 0.3s ease;
+    width: 100%;
+    max-width: 800px;
+    height: auto;
+    object-fit: cover;
+
+    @media (max-width: 1024px) {
+      max-width: 600px;
+    }
+
+    @media (max-width: 768px) {
+      max-width: 500px;
+    }
+
+    @media (max-width: 640px) {
+      max-width: 100%;
+    }
   }
 }
 
@@ -782,6 +1151,36 @@ onBeforeUnmount(() => {
     font-weight: 400;
     line-height: 24px; /* 150% */
     letter-spacing: 0.32px;
+  }
+
+  .honor-list-container {
+    margin-top: 110px;
+    position: relative;
+    height: 240px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .honor-list-item {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    font-family: "Source Han Sans SC", sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 32px;
+    line-height: 40px;
+    letter-spacing: 0.64px;
+    will-change: transform, opacity, color;
+    white-space: nowrap;
+    transform-origin: left center;
+  }
+
+  .cert-img {
+    will-change: transform, opacity;
+    filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.2));
+    pointer-events: none;
   }
 }
 

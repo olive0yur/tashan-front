@@ -132,7 +132,8 @@ const menuItems = [
   },
   {
     label: '联系我们',
-    to: '/contact'
+    to: '/contact',
+    disabled: true
   }
 ]
 
